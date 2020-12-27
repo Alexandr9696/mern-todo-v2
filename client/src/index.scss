@@ -1,0 +1,97 @@
+@import "~materialize-css/dist/css/materialize.min.css";
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin-bottom: 4.5rem;
+}
+
+.app {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+  .app {
+    padding-left: 0;
+  }
+}
+
+@media only screen and (min-width: 993px) {
+  .container {
+    width: 90%;
+  }
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  strong {
+    margin-right: 1rem;
+  }
+}
+
+.alert-enter {
+  transform: translateY(-200px);
+  opacity: 0;
+}
+
+.alert-enter-active {
+  animation: alertAnimation 500ms ease-out forwards;
+}
+
+.alert-exit-active {
+  animation: alertAnimation 350ms ease-out alternate-reverse;
+}
+
+@keyframes alertAnimation {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+}
+
+.task-exit-active {
+  animation: task 800ms ease-out forwards;
+}
+
+.task-enter-active {
+  animation: task 800ms ease-out alternate-reverse;
+}
+
+@keyframes task {
+  0% {
+    transform: translateX(0);
+  }
+  30% {
+    opacity: .7;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-200px);
+  }
+}
