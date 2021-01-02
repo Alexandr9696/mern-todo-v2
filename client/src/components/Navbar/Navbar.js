@@ -1,19 +1,14 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react'
-import M from 'materialize-css/dist/js/materialize.min.js';
+import React, {useContext, useEffect} from 'react'
 import {Link, useHistory} from "react-router-dom";
-import {AuthContext} from "../../context/AuthContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import M from 'materialize-css/dist/js/materialize.min.js';
+import {AuthContext} from "../../context/AuthContext";
 import './Navbar.scss'
-import {AlertContext} from "../../context/alert/alertContext";
-import {useHttp} from "../../hooks/http.hook";
-
+import {Categories} from "./Categories";
 
 export const Navbar = () => {
-  const history = useHistory()
   const auth = useContext(AuthContext)
-  const {request} = useHttp()
-  const [categories, setCategories] = useState([])
-  const {show} = useContext(AlertContext)
+  const history = useHistory()
 
   const logoutHandler = (event) => {
     event.preventDefault()
@@ -27,27 +22,6 @@ export const Navbar = () => {
     }
   )
 
-  const fetchCategories = useCallback(async () => {
-    try {
-      const fetched = await request('/task/list', 'GET', null, {
-        Authorization: `Bearer ${auth.token}`
-      })
-      setCategories(fetched)
-    } catch (e) {
-      show(e.message, 'danger')
-    }
-  }, [auth.token, request])
-
-
-  useEffect(() => {
-    fetchCategories()
-  }, [fetchCategories])
-
-  const category = [
-    'Дом', 'Работа', 'Семья'
-  ]
-
-
   return (
     <>
       <ul id="slide-out" className="sidenav sidenav-fixed teal darken-3 sidenav-close">
@@ -57,11 +31,11 @@ export const Navbar = () => {
         <li>
           <Link exact to="/">
             <FontAwesomeIcon
-            icon={['fas', 'th']}
-            style={{ color: 'black', marginRight: '5px'}}
-            fixedWidth
+              icon={['fas', 'th']}
+              style={{color: 'black', marginRight: '5px'}}
+              fixedWidth
             />
-          Главная экран</Link>
+            Главная экран</Link>
         </li>
 
         {auth.isAuthenticated ?
@@ -70,31 +44,14 @@ export const Navbar = () => {
               <Link to="/tasks">Список задач</Link>
             </li>
             <li>
-              <div className="divider teal darken-4" />
+              <div className="divider teal darken-4"/>
             </li>
-            <li>
-              <div className='category-list'>
-                <div className='category-title'>Список категорий</div>
-                <FontAwesomeIcon
-                  icon={['fas', 'plus']}
-                  style={{ color: 'rgba(0, 0, 0, .5)', marginRight: '5px'}}
-                  fixedWidth
-                  onClick={() => console.log('click')}
-                  cursor='pointer'
-                />
-              </div>
-            </li>
-            {
-              category.map((item) => <li><Link to='/tasks'>{item}</Link></li>)
-            }
-            <li>
-              <div className="divider teal darken-4" />
-            </li>
+            <Categories />
             <li>
               <a href="/" onClick={logoutHandler}>
                 <FontAwesomeIcon
                   icon={['fas', 'sign-out-alt']}
-                  style={{ color: 'black', marginRight: '5px'}}
+                  style={{color: 'black', marginRight: '5px'}}
                   fixedWidth
                 />
                 Выйти</a>
@@ -103,13 +60,13 @@ export const Navbar = () => {
           :
           <>
             <li>
-              <div className="divider teal darken-4" />
+              <div className="divider teal darken-4"/>
             </li>
             <li>
               <Link to="/auth/register">
                 <FontAwesomeIcon
                   icon={['fas', 'user-plus']}
-                  style={{ color: 'black', marginRight: '5px'}}
+                  style={{color: 'black', marginRight: '5px'}}
                   fixedWidth
                 />
                 Регистрация
@@ -119,7 +76,7 @@ export const Navbar = () => {
               <Link to="/auth/login">
                 <FontAwesomeIcon
                   icon={['fas', 'sign-in-alt']}
-                  style={{ color: 'black', marginRight: '5px'}}
+                  style={{color: 'black', marginRight: '5px'}}
                   fixedWidth
                 />
                 Войти</Link>
@@ -131,7 +88,7 @@ export const Navbar = () => {
         <FontAwesomeIcon
           icon={['fas', 'bars']}
           size="2x"
-          style={{ color: '#00695c', margin: '10px 0 0 10px'}}
+          style={{color: '#00695c', margin: '10px 0 0 10px'}}
         />
       </a>
     </>

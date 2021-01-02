@@ -1,20 +1,22 @@
-import React from 'react'
+import React, {useReducer} from 'react'
 import {BrowserRouter} from "react-router-dom";
-import {Navbar} from "./components/Navbar/Navbar";
-import {useAuth} from "./hooks/auth.hook";
-import {AuthContext} from "./context/AuthContext";
 import {useRoutes} from "./routes";
-import {Loader} from "./components/Loader";
+import {Navbar} from "./components/Navbar/Navbar";
 import {Alert} from "./components/Alert";
-import {AlertState} from "./context/alert/AlertState";
-import './fontawesome';
+import {Loader} from "./components/Loader";
 import {AddButton} from "./components/AddButton/AddButton";
+import {AlertState} from "./context/alert/AlertState";
+import {AuthContext} from "./context/AuthContext";
+import {CategoryContext, initialState, categoryReducer} from "./context/category/сategoryContext";
+import {useAuth} from "./hooks/auth.hook";
+import './fontawesome';
 
 
 function App() {
   const {name, login, logout, token, userId, ready} = useAuth()
   const isAuthenticated = !!token
   const routes = useRoutes(isAuthenticated)
+  const [categories, dispatch] = useReducer(categoryReducer, initialState)
 
   if (!ready) {
     return <Loader/>
@@ -24,19 +26,21 @@ function App() {
     <AuthContext.Provider value={{
       name, token, login, logout, userId, isAuthenticated
     }}>
-      <AlertState>
-        <BrowserRouter>
-          <Navbar/>
-          <div className='app'>
-            <Alert/>
-            {routes}
-            {isAuthenticated ?
-              <AddButton />
-              : null
-            }
-          </div>
-        </BrowserRouter>
-      </AlertState>
+      <CategoryContext.Provider value={{dispatch, categories}}>
+        <AlertState>
+          <BrowserRouter>
+            <Navbar/>
+            <div className='app'>
+              <Alert/>
+              {routes}
+              {isAuthenticated ?
+                <AddButton />
+                : null
+              }
+            </div>
+          </BrowserRouter>
+        </AlertState>
+      </CategoryContext.Provider>
     </AuthContext.Provider>
   )
 }

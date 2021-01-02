@@ -36,7 +36,18 @@ const schema = new Schema({
       }
     }
   ],
-  categories: Array
+  categories: [
+    {
+      title: {
+        type: String,
+        required: true
+      },
+      color: {
+        type: String,
+        required: true
+      }
+    }
+  ]
 })
 
 module.exports = model('User', schema)

@@ -1,24 +1,21 @@
 import React, {useContext, useState} from "react";
-import {useHttp} from "../hooks/http.hook";
-import {AuthContext} from "../context/AuthContext";
 import {Link, useHistory} from "react-router-dom";
 import {AlertContext} from "../context/alert/alertContext";
+import {AuthContext} from "../context/AuthContext";
+import {useHttp} from "../hooks/http.hook";
+import {useChangeHandler} from "../hooks/changeHandler.hook";
 
 export const Login = () => {
-  const history = useHistory()
   const auth = useContext(AuthContext)
   const {show} = useContext(AlertContext)
+  const history = useHistory()
   const {loading, request} = useHttp()
+  const {changeHandler} = useChangeHandler()
 
   const [form, setForm] = useState({
     email: '',
     password: ''
   })
-
-  // обработка inputs
-  const changeHandler = event => {
-    setForm({...form, [event.target.name]: event.target.value} )
-  }
 
   // авторизация
   const loginHandler = async (e) => {
@@ -44,7 +41,7 @@ export const Login = () => {
               type="email"
               className="validate"
               value={form.email}
-              onChange={changeHandler}
+              onChange={event => changeHandler(event, setForm, form)}
               required
             />
             <label htmlFor="email">Введите email</label>
@@ -57,7 +54,7 @@ export const Login = () => {
               type="password"
               className="validate"
               value={form.password}
-              onChange={changeHandler}
+              onChange={event => changeHandler(event, setForm, form)}
               required
             />
             <label htmlFor="password">Введите пароль</label>

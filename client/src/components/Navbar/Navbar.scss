@@ -1,12 +1,24 @@
 .category-list {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  color: rgba(0, 0, 0, 0.5);
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  height: 48px;
+  line-height: 48px;
   padding: 0 32px;
 }
 
-.category-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: rgba(0, 0, 0, .5);
+.navbar-links {
+  transition: all 0.3s;
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+.category-circle {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 10px;
 }

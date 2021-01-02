@@ -49,8 +49,30 @@ exports.loginValidator = [
     })
 ]
 
+exports.passwordValidator = [
+  body('password')
+    .isLength({min: 6, max: 56}).withMessage('Пароль должен быть минимум 6 символов')
+    .isAlphanumeric()
+    .trim(),
+]
+
 exports.tasksValidator = [
   body('title')
-    .notEmpty().withMessage('Введите заметку')
+    .notEmpty().withMessage('Название задачи не может быть пустым')
+    .trim(),
+  body('category')
+    .notEmpty().withMessage('Заполните название категории')
+    .trim(),
+  body('importance')
+    .notEmpty().withMessage('Укажите важность задачи')
+    .trim()
+]
+
+exports.categoryValidator = [
+  body('title')
+    .notEmpty().withMessage('Название задачи не может быть пустым')
+    .trim(),
+  body('color')
+    .notEmpty().withMessage('Укажите цвет категории')
     .trim()
 ]

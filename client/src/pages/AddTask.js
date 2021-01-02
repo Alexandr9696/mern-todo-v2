@@ -1,16 +1,20 @@
 import React, {useContext, useEffect, useState} from 'react'
+import {useHistory} from "react-router-dom";
 import M from 'materialize-css/dist/js/materialize.min.js';
 import {AuthContext} from "../context/AuthContext";
-import {useHttp} from "../hooks/http.hook";
 import {AlertContext} from "../context/alert/alertContext";
-import {useHistory} from "react-router-dom";
-
+import {CategoryContext} from "../context/category/сategoryContext";
+import {useHttp} from "../hooks/http.hook";
+import {useChangeHandler} from "../hooks/changeHandler.hook";
 
 export const AddTask = () => {
   const {token} = useContext(AuthContext)
-  const {request} = useHttp()
   const {show} = useContext(AlertContext)
+  const {categories} = useContext(CategoryContext)
   const history = useHistory()
+  const {request} = useHttp()
+  const {changeHandler} = useChangeHandler()
+
   const [form, setForm] = useState({
     title: '', category: '', importance: ''
   })
@@ -19,10 +23,6 @@ export const AddTask = () => {
     let el = document.querySelectorAll('select');
     M.FormSelect.init(el, {});
   })
-
-  const changeHandler = event => {
-    setForm({...form, [event.target.name]: event.target.value})
-  }
 
   const createHandler = async (e) => {
     e.preventDefault()
@@ -49,7 +49,7 @@ export const AddTask = () => {
               type="text"
               className="validate"
               value={form.title}
-              onChange={changeHandler}
+              onChange={event => changeHandler(event, setForm, form)}
               required
             />
             <label htmlFor="title">Введите название задачи</label>
@@ -61,13 +61,15 @@ export const AddTask = () => {
               name="category"
               className="validate"
               value={form.category}
-              onChange={changeHandler}
+              onChange={event => changeHandler(event, setForm, form)}
               required>
-              <option value="" disabled selected>Выберите категорию задачи</option>
-              <option value="home">Дом</option>
-              <option value="work">Работа</option>
-              <option value="family">Семья</option>
-              <span className="helper-text" data-error="Категория не может быть пустой" />
+              <option value="" disabled>Выберите категорию задачи</option>
+
+              {categories.length ?
+                categories.map((item) => <option key={item._id} value={item._id}>{item.title}</option>)
+                : <option value="" disabled>Создайте категорию</option>
+              }
+
             </select>
             <label>Категория задачи</label>
           </div>
@@ -77,16 +79,15 @@ export const AddTask = () => {
               name="importance"
               className="validate"
               value={form.importance}
-              onChange={changeHandler}
+              onChange={event => changeHandler(event, setForm, form)}
               required
             >
-              <option value="" disabled selected>Выберите важность задачи</option>
+              <option value="" disabled>Выберите важность задачи</option>
               <option value="1">Обычная</option>
               <option value="2">Важно</option>
               <option value="3">Очень важно</option>
             </select>
             <label>Уровень важности</label>
-            <span className="helper-text" data-error="Важность не может быть пустой" />
           </div>
 
           <button className="btn btn-primary" type="submit">Создать задачу</button>

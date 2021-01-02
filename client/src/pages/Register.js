@@ -1,14 +1,16 @@
 import React, {useContext, useState} from "react"
-import {useHttp} from "../hooks/http.hook";
 import {useHistory} from "react-router-dom";
 import {AuthContext} from "../context/AuthContext";
 import {AlertContext} from "../context/alert/alertContext";
+import {useHttp} from "../hooks/http.hook";
+import {useChangeHandler} from "../hooks/changeHandler.hook";
 
 export const Register = () => {
-  const history = useHistory()
-  const {loading, request} = useHttp()
   const {show} = useContext(AlertContext)
   const auth = useContext(AuthContext)
+  const history = useHistory()
+  const {loading, request} = useHttp()
+  const {changeHandler} = useChangeHandler()
 
   const [form, setForm] = useState({
     name: '',
@@ -16,11 +18,6 @@ export const Register = () => {
     password: '',
     repassword: ''
   })
-
-  // обработка inputs
-  const changeHandler = event => {
-    setForm({...form, [event.target.name]: event.target.value} )
-  }
 
   // регистрация
   const registerHandler = async (e) => {
@@ -47,7 +44,7 @@ export const Register = () => {
               type="text"
               className="validate"
               value={form.name}
-              onChange={changeHandler}
+              onChange={event => changeHandler(event, setForm, form)}
               required
             />
             <label htmlFor="name">Введите имя</label>
@@ -60,7 +57,7 @@ export const Register = () => {
               type="email"
               className="validate"
               value={form.email}
-              onChange={changeHandler}
+              onChange={event => changeHandler(event, setForm, form)}
               required
             />
             <label htmlFor="email">Введите email</label>
@@ -73,7 +70,7 @@ export const Register = () => {
               type="password"
               className="validate"
               value={form.password}
-              onChange={changeHandler}
+              onChange={event => changeHandler(event, setForm, form)}
               required
             />
             <label htmlFor="password">Введите пароль</label>
@@ -86,7 +83,7 @@ export const Register = () => {
               type="password"
               className="validate"
               value={form.repassword}
-              onChange={changeHandler}
+              onChange={event => changeHandler(event, setForm, form)}
               required
             />
             <label htmlFor="repassword">Введите повторно пароль</label>

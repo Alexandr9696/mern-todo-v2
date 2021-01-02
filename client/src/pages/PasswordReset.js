@@ -1,14 +1,16 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
-import {useHttp} from "../hooks/http.hook";
 import {useHistory, useParams} from "react-router-dom";
 import {AlertContext} from "../context/alert/alertContext";
+import {useHttp} from "../hooks/http.hook";
+import {useChangeHandler} from "../hooks/changeHandler.hook";
 
 
 export const PasswordReset = () => {
+  const {show} = useContext(AlertContext)
   const {token} = useParams()
   const history = useHistory()
-  const {show} = useContext(AlertContext)
   const {request} = useHttp()
+  const {changeHandler} = useChangeHandler()
 
   const [form, setForm] = useState({
     password: ''
@@ -32,11 +34,6 @@ export const PasswordReset = () => {
   useEffect(() => {
     fetchToken()
   }, [fetchToken])
-
-  // обработка inputs
-  const changeHandler = event => {
-    setForm({...form, [event.target.name]: event.target.value} )
-  }
 
   // изменение пароля
   const passwordHandler = async () => {
@@ -62,7 +59,7 @@ export const PasswordReset = () => {
               type="password"
               className="validate"
               value={form.password}
-              onChange={changeHandler}
+              onChange={event => changeHandler(event, setForm, form)}
               required
             />
             <label htmlFor="password">Введите пароль</label>

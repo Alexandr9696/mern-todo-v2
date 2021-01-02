@@ -7,6 +7,7 @@ import {Login} from "./pages/Login";
 import {Reset} from "./pages/Reset";
 import {PasswordReset} from "./pages/PasswordReset";
 import {AddTask} from "./pages/AddTask";
+import {AddCategory} from "./pages/addCategory/AddCategory";
 
 
 export const useRoutes = (isAuthenticated) => {
@@ -21,6 +22,9 @@ export const useRoutes = (isAuthenticated) => {
         </Route>
         <Route exact path='/addTask'>
           <AddTask />
+        </Route>
+        <Route exact path='/addCategory'>
+          <AddCategory />
         </Route>
        </Switch>
     )
